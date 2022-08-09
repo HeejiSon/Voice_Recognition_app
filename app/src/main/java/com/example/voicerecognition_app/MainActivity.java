@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.content.Intent;
+
 public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
     private static final String TAG = "Beacontest";
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         // 아래에 있는 handleMessage를 부르는 함수. 맨 처음에는 0초간격이지만 한번 호출되고 나면
         // 1초마다 불러온다.
         handler.sendEmptyMessage(0);
+
+        Intent intent1 = new Intent(this, Login.class);
+        startActivity(intent1);
     }
 
     Handler handler = new Handler() {

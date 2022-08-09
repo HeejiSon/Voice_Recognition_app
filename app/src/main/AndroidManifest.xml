@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VoiceRecognition_app">
         <activity
+            android:name=".tab_1"
+            android:exported="false" />
+        <activity
+            android:name=".category_menu"
+            android:exported="false" />
+        <activity
             android:name=".Signup"
             android:exported="false" />
         <activity

@@ -15,12 +15,16 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("로그인");
 
         //로그인 버튼
         login = findViewById(R.id.loginbutton);
 
-        login.setOnClickListener( v -> {
-            Intent intent1 = new Intent(this, menu_tab.class);
+        //저시력용 메뉴 화면으로 이동
+        //사용자 정보에 따라서 저시력용, 음성인식 메뉴로 이동 구분해야함함
+
+       login.setOnClickListener( v -> {
+            Intent intent1 = new Intent(this, category_menu.class);
             startActivity(intent1);
         });
 
