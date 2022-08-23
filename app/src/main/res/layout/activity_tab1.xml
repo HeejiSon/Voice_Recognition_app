@@ -52,9 +52,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15dp"
+                        android:textColor="@color/black"
                         android:text="아메리카노\n 2,500원"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textSize="50dp" />
 

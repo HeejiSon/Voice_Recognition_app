@@ -3,15 +3,12 @@ package com.example.voicerecognition_app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
-public class tab_1 extends AppCompatActivity {
+public class tab_6 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab1);
-
-
+        setContentView(R.layout.activity_tab6);
     }
 }

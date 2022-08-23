@@ -3,11 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.236" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/drawable/ic_launcher_background.xml" value="0.236" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/drawable/shape.xml" value="0.236" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_category_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_login.xml" value="0.358695652173913" />
         <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_low_vision_menu.xml" value="0.33" />
         <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_signup.xml" value="0.358695652173913" />
         <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab1.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab2.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab3.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab4.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab5.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/pc/StudioProjects/voicerecognition_app/app/src/main/res/layout/activity_tab6.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>
