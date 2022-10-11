@@ -38,6 +38,7 @@ public class Signup extends AppCompatActivity {
 
 
 
+
         //비밀번호 확인 버튼
         pwcheck = findViewById(R.id.pwcheckbutton);
         pwcheck.setOnClickListener(v -> {
@@ -54,5 +55,8 @@ public class Signup extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
+
+        // DB에 데이터 삽입
+
     }
 }

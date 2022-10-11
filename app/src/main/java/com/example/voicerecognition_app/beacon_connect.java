@@ -9,11 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-
-
-import android.content.Intent;
+import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import org.altbeacon.beacon.Beacon;
@@ -27,15 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/*new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            startActivity(intent);
-        }
-    }, 2000);*/
+import android.content.Intent;
 
-public class MainActivity extends AppCompatActivity  implements BeaconConsumer{
+public class beacon_connect extends AppCompatActivity implements BeaconConsumer {
     private static final String TAG = "Beacontest";
     private BeaconManager beaconManager;
 
@@ -47,8 +40,8 @@ public class MainActivity extends AppCompatActivity  implements BeaconConsumer{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setTitle("메인");
+        setContentView(R.layout.activity_beacon_connect);
+        //비콘 매니저 생성,
         beaconManager = BeaconManager.getInstanceForApplication(this);
         textView = (TextView) findViewById(R.id.Textview);//비콘검색후 검색내용 뿌려주기위한 textview
 
@@ -74,15 +67,8 @@ public class MainActivity extends AppCompatActivity  implements BeaconConsumer{
                 builder.show();
             }
         }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(MainActivity.this, Login.class);
-                startActivity(intent);
-            }
-        }, 2000);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -111,6 +97,53 @@ public class MainActivity extends AppCompatActivity  implements BeaconConsumer{
         } catch (RemoteException e) {
         }
     }
+
+
+
+    // 버튼이 클릭되면 textView 에 비콘들의 정보를 뿌린다.
+    public void OnButtonClicked(View view) {
+        // 아래에 있는 handleMessage를 부르는 함수. 맨 처음에는 0초간격이지만 한번 호출되고 나면
+        // 1초마다 불러온다.
+        handler.sendEmptyMessage(0);
+
+        Intent intent1 = new Intent(this, Login.class);
+        startActivity(intent1);
+    }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            textView.setText("");
+
+            // 비콘의 아이디와 거리를 측정하여 textView에 넣는다.
+            for (Beacon beacon : beaconList) {
+                String uuid = beacon.getId1().toString(); //beacon uuid
+                int major = beacon.getId2().toInt(); //beacon major
+                int minor = beacon.getId3().toInt();// beacon minor
+                String address = beacon.getBluetoothAddress();
+                if (major == 10001 && minor == 19641) {
+                    //beacon 의 식별을 위하여 major값과 minor값으로 확인
+                    //이곳에 필요한 기능 구현
+                    textView.append("Name: MiniBeacon_15183\n");
+                    textView.append("major ID : " + beacon.getId2() + " / " + "minor ID : " + beacon.getId3() + "\n");
+                    textView.append("Distance : " + Double.parseDouble(String.format("%.3f", beacon.getDistance())) + "m\n");
+                    textView.append("Beacon Bluetooth Id : " + address + "\n");
+                    textView.append("Beacon UUID : " + uuid + "\n");
+
+
+                } else {
+                    //나머지 비콘검색
+                    textView.append("other Beacon ID: " + beacon.getId2() + " / " + "Distance : " + Double.parseDouble(String.format("%.3f", beacon.getDistance())) + "m\n");
+                    textView.append("Beacon Bluetooth Id : " + address + "\n");
+                    textView.append("Beacon UUID : " + uuid + "\n");
+
+                }
+
+            }
+
+            // 자기 자신을 1초마다 호출
+            handler.sendEmptyMessageDelayed(0, 1000);
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

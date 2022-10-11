@@ -1,14 +1,23 @@
 package com.example.voicerecognition_app;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class category_menu extends AppCompatActivity {
+import java.util.Locale;
 
-    Button coffee, latte, ade, smoothie, tea;
+public class category_menu extends AppCompatActivity implements TextToSpeech.OnInitListener{
+    private TextToSpeech tts;
+    private TextView input_text;
+    Button coffee_btn, latte_btn, ade_btn, smoothie_btn, tea_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,44 +25,92 @@ public class category_menu extends AppCompatActivity {
         setContentView(R.layout.activity_category_menu);
         setTitle("카테고리");
 
-        //커피 버튼
-        coffee = findViewById(R.id.coffee_btn);
+        tts = new TextToSpeech(this, this);
 
-        coffee.setOnClickListener( v -> {
+        // 원하시는 메뉴의 카테고리를 선택해주세요
+        input_text = findViewById(R.id.category);
+
+
+        //커피 버튼
+        coffee_btn = findViewById(R.id.coffee_btn);
+        coffee_btn.setOnClickListener( v -> {
+            CharSequence text = coffee_btn.getText();
+            tts.setPitch((float)0.6); // 음성 톤 높이 지정
+            tts.setSpeechRate((float)0.8); // 음성 속도 지정
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             Intent intent1 = new Intent(this, tab_1.class);
             startActivity(intent1);
         });
 
         //라떼 버튼
-        latte = findViewById(R.id.latte_btn);
-
-        latte.setOnClickListener( v -> {
+        latte_btn = findViewById(R.id.latte_btn);
+        latte_btn.setOnClickListener( v -> {
+            CharSequence text = latte_btn.getText();
+            tts.setPitch((float)0.6); // 음성 톤 높이 지정
+            tts.setSpeechRate((float)0.8); // 음성 속도 지정
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             Intent intent2 = new Intent(this, tab_2.class);
             startActivity(intent2);
         });
 
         //에이드 버튼
-        ade = findViewById(R.id.ade_btn);
-
-        ade.setOnClickListener( v -> {
+        ade_btn = findViewById(R.id.ade_btn);
+        ade_btn.setOnClickListener( v -> {
+            CharSequence text = ade_btn.getText();
+            tts.setPitch((float)0.6); // 음성 톤 높이 지정
+            tts.setSpeechRate((float)0.8); // 음성 속도 지정
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             Intent intent3 = new Intent(this, tab_3.class);
             startActivity(intent3);
         });
 
         //스무디 버튼
-        smoothie = findViewById(R.id.smoothie_btn);
-
-        smoothie.setOnClickListener( v -> {
+        smoothie_btn = findViewById(R.id.smoothie_btn);
+        smoothie_btn.setOnClickListener( v -> {
+            CharSequence text = smoothie_btn.getText();
+            tts.setPitch((float)0.6); // 음성 톤 높이 지정
+            tts.setSpeechRate((float)0.8); // 음성 속도 지정
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             Intent intent4 = new Intent(this, tab_4.class);
             startActivity(intent4);
         });
 
         //차 버튼
-        tea = findViewById(R.id.tea_btn);
-
-        tea.setOnClickListener( v -> {
+        tea_btn = findViewById(R.id.tea_btn);
+        tea_btn.setOnClickListener( v -> {
+            CharSequence text = tea_btn.getText();
+            tts.setPitch((float)0.8); // 음성 톤 높이 지정
+            tts.setSpeechRate((float)0.8); // 음성 속도 지정
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             Intent intent5 = new Intent(this, tab_5.class);
             startActivity(intent5);
         });
+    }
+
+    private void speakOut(){
+        CharSequence text = input_text.getText();
+        tts.setPitch((float)0.6); // 음성 톤 높이 지정
+        tts.setSpeechRate((float)1.0); // 음성 속도 지정
+
+        // 첫 번째 매개변수: 음성 출력을 할 텍스트
+        // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
+        //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onInit(int status) { // OnInitListener를 통해서 TTS 초기화
+        if(status == TextToSpeech.SUCCESS){
+            int result = tts.setLanguage(Locale.KOREA); // TTS언어 한국어로 설정
+
+            if(result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA){
+                Log.e("TTS", "This Language is not supported");
+            }else{
+                speakOut();// onInit에 음성출력할 텍스트를 넣어줌
+            }
+        }else{
+            Log.e("TTS", "Initialization Failed!");
+        }
     }
 }
