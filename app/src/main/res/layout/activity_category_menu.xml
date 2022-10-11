@@ -74,16 +74,16 @@
                     android:text="차"
                     android:textSize="60dp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="15dp"/>
+                    android:layout_marginBottom="15dp"/>`
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/dessert_btn"
+
+                <TextView
+                    android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="디저트"
-                    android:textSize="60dp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="15dp"/>
+                    android:text="원하시는 메뉴의 카테고리를 선택해주세요."
+                    android:textColor="@color/white"
+                    android:textSize="2dp" />
 
             </LinearLayout>
 

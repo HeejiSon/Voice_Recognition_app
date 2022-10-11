@@ -125,6 +125,14 @@
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
+                <TextView
+                    android:id="@+id/category_tea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="차 카테고리 입니다."
+                    android:textColor="@color/white"
+                    android:textSize="2dp" />
+
             </LinearLayout>
 
         </LinearLayout>

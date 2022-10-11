@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -35,8 +35,9 @@
                 android:layout_marginBottom="15dp"
                 android:layout_weight="2.5"
                 android:text="회원 가입"
+                android:textStyle="bold"
                 android:textColor="@color/purple_200"
-                android:textSize="25dp" />
+                android:textSize="30dp" />
         </LinearLayout>
 
         <ScrollView
@@ -66,8 +67,7 @@
                     android:id="@+id/signName"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="15dp"
-
+                    android:layout_marginBottom="20dp"
                     android:ems="10"
                     android:hint=" 이름"
                     android:inputType="textPersonName"
@@ -92,8 +92,7 @@
                         android:id="@+id/signID"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="15dp"
-
+                        android:layout_marginBottom="20dp"
                         android:ems="10"
                         android:hint=" 아이디"
                         android:inputType="textPersonName"
@@ -104,7 +103,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-
                         android:text="중복"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -128,8 +126,7 @@
                     android:id="@+id/signPW"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="15dp"
-
+                    android:layout_marginBottom="20dp"
                     android:ems="10"
                     android:hint=" 비밀번호"
                     android:inputType="textPassword"
@@ -154,8 +151,7 @@
                         android:id="@+id/signPW2"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="15dp"
-
+                        android:layout_marginBottom="20dp"
                         android:ems="10"
                         android:hint=" 비밀번호 다시 입력"
                         android:inputType="textPassword"
@@ -166,51 +162,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-
                         android:text="확인"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/radiotext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:text="주로 사용하실 기능을 선택해주세요."
-                        android:textColor="@color/purple_200"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:id="@+id/radio_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/low_vision"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="저시력층(화면 확대)"
-                            android:layout_marginRight="30dp"/>
-
-                        <RadioButton
-                            android:id="@+id/voice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="음성인식" />
-
-                    </RadioGroup>
-
-
-                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/signupbutton"

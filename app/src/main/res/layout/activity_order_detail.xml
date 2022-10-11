@@ -30,12 +30,6 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spn_SPList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="30dp"
-            android:spinnerMode="dropdown" />
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"

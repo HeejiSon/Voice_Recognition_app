@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tab_4">
+    tools:context=".tab_2">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="스무디"
+                    android:text="라떼"
                     android:textAlignment="center"
                     android:textColor="#ff7F00"
                     android:textSize="60dp"
@@ -38,67 +38,57 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/smoothie_1"
+                    android:id="@+id/latte_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:textColor="@color/black"
-                    android:text="딸기 스무디\n 4,000원"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="50dp" />
-
-                <TextView
-                    android:id="@+id/smoothie_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="블루베리 스무디\n4,000원"
+                    android:text="고구마라떼 \n3,000원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/smoothie_3"
+                    android:id="@+id/latte_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="망고 스무디\n4,000원"
+                    android:textColor="@color/black"
+                    android:text="녹차라떼\n 3,500원"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/latte_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="오곡라떼\n3,000원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/smoothie_4"
+                    android:id="@+id/latte_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="레몬 스무디\n4,000원"
+                    android:text="티라미수라떼\n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/smoothie_5"
+                    android:id="@+id/category_latte"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="복숭아 스무디\n4,000원"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="50dp" />
-
-                <TextView
-                    android:id="@+id/category_smoothie"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="스무디 카테고리 입니다."
+                    android:text="라떼 카테고리 입니다."
                     android:textColor="@color/white"
                     android:textSize="2dp" />
+
 
             </LinearLayout>
 

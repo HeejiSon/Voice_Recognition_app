@@ -14,29 +14,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="370dp"
-            android:layout_height="500dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_weight="1"
-            android:onClick="OnButtonClicked"
-            android:text="비콘 인식 버튼"
-            android:textSize="50dp" />
 
-        <TextView
-            android:id="@+id/Textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="비콘을 인식해주세요."
-            android:textSize="30dp"
-            android:layout_margin="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="424dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/main" />
+
     </LinearLayout>
 
 
