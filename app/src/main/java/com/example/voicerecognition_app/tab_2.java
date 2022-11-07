@@ -2,6 +2,7 @@ package com.example.voicerecognition_app;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import java.util.Locale;
 
 public class tab_2 extends AppCompatActivity implements TextToSpeech.OnInitListener{
     private TextToSpeech tts;
-    private TextView input_text, l_1, l_2, l_3, l_4;
+    private TextView  l_1, l_2, l_3, l_4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,6 @@ public class tab_2 extends AppCompatActivity implements TextToSpeech.OnInitListe
         setTitle("라떼");
 
         tts = new TextToSpeech(this, this);
-        input_text = findViewById(R.id.category_latte);
 
         // 고구마라떼
         l_1 = findViewById(R.id.latte_1);
@@ -60,12 +60,7 @@ public class tab_2 extends AppCompatActivity implements TextToSpeech.OnInitListe
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
         });
     }
-    private void speakOut(){
-        CharSequence text = input_text.getText();
-        tts.setPitch((float)0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float)1.0); // 음성 속도 지정
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -76,7 +71,6 @@ public class tab_2 extends AppCompatActivity implements TextToSpeech.OnInitListe
             if(result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA){
                 Log.e("TTS", "This Language is not supported");
             }else{
-                speakOut();// onInit에 음성출력할 텍스트를 넣어줌
             }
         }else{
             Log.e("TTS", "Initialization Failed!");

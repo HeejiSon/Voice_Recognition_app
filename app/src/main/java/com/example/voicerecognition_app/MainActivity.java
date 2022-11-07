@@ -27,13 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/*new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            startActivity(intent);
-        }
-    }, 2000);*/
 
 public class MainActivity extends AppCompatActivity  implements BeaconConsumer{
     private static final String TAG = "Beacontest";

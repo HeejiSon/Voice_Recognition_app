@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +17,7 @@ import java.util.Locale;
 public class category_menu extends AppCompatActivity implements TextToSpeech.OnInitListener{
     private TextToSpeech tts;
     private TextView input_text;
+    private String coffee_text, latte_text, ade_text, smoothie_text, tea_text;
     Button coffee_btn, latte_btn, ade_btn, smoothie_btn, tea_btn;
 
     @Override
@@ -32,58 +33,92 @@ public class category_menu extends AppCompatActivity implements TextToSpeech.OnI
 
 
         //커피 버튼
+        //coffee_text = findViewById(R.id.category_coffee);
+        coffee_text = "커피 카테고리 입니다.";
         coffee_btn = findViewById(R.id.coffee_btn);
         coffee_btn.setOnClickListener( v -> {
-            CharSequence text = coffee_btn.getText();
+            CharSequence text = coffee_text;
             tts.setPitch((float)0.6); // 음성 톤 높이 지정
             tts.setSpeechRate((float)0.8); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-            Intent intent1 = new Intent(this, tab_1.class);
-            startActivity(intent1);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent1 = new Intent(v.getContext(), menu_tab.class);
+                    startActivity(intent1);
+                }
+            }, 2000);
+
+
         });
 
         //라떼 버튼
+        latte_text = "라떼 카테고리 입니다.";
         latte_btn = findViewById(R.id.latte_btn);
         latte_btn.setOnClickListener( v -> {
-            CharSequence text = latte_btn.getText();
+            CharSequence text = latte_text;
             tts.setPitch((float)0.6); // 음성 톤 높이 지정
             tts.setSpeechRate((float)0.8); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-            Intent intent2 = new Intent(this, tab_2.class);
-            startActivity(intent2);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent2 = new Intent(v.getContext(), menu_tab_2.class);
+                    startActivity(intent2);
+                }
+            }, 2000);
         });
 
         //에이드 버튼
+        ade_text = "에이드 카테고리 입니다.";
         ade_btn = findViewById(R.id.ade_btn);
         ade_btn.setOnClickListener( v -> {
-            CharSequence text = ade_btn.getText();
+            CharSequence text = ade_text;
             tts.setPitch((float)0.6); // 음성 톤 높이 지정
             tts.setSpeechRate((float)0.8); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-            Intent intent3 = new Intent(this, tab_3.class);
-            startActivity(intent3);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent3 = new Intent(v.getContext(), tab_3.class);
+                    startActivity(intent3);
+                }
+            }, 2000);
+
         });
 
         //스무디 버튼
+        smoothie_text = "스무디 카테고리 입니다.";
         smoothie_btn = findViewById(R.id.smoothie_btn);
         smoothie_btn.setOnClickListener( v -> {
-            CharSequence text = smoothie_btn.getText();
+            CharSequence text = smoothie_text;
             tts.setPitch((float)0.6); // 음성 톤 높이 지정
             tts.setSpeechRate((float)0.8); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-            Intent intent4 = new Intent(this, tab_4.class);
-            startActivity(intent4);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent4 = new Intent(v.getContext(), tab_4.class);
+                    startActivity(intent4);
+                }
+            }, 2000);
         });
 
         //차 버튼
+        tea_text = "차 카테고리 입니다.";
         tea_btn = findViewById(R.id.tea_btn);
         tea_btn.setOnClickListener( v -> {
-            CharSequence text = tea_btn.getText();
+            CharSequence text = tea_text;
             tts.setPitch((float)0.8); // 음성 톤 높이 지정
             tts.setSpeechRate((float)0.8); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-            Intent intent5 = new Intent(this, tab_5.class);
-            startActivity(intent5);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent5 = new Intent(v.getContext(), tab_5.class);
+                    startActivity(intent5);
+                }
+            }, 2000);
         });
     }
 
