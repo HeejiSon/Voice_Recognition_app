@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tab_5">
+    tools:context=".tab_3">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="차"
+                    android:text="에이드"
                     android:textAlignment="center"
                     android:textColor="#ff7F00"
                     android:textSize="60dp"
@@ -38,105 +37,81 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tea_1"
+                    android:id="@+id/ade_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="레몬차 \n3,000원"
+                    android:text="자몽 에이드 \n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/tea_2"
+                    android:id="@+id/ade_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:textColor="@color/black"
-                    android:text="유자차\n 3,000원"
+                    android:text="레몬 에이드\n 3,500원"
                     android:textAlignment="center"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/tea_3"
+                    android:id="@+id/ade_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="자몽차\n3,000원"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="50dp" />
-
-                <TextView
-                    android:id="@+id/tea_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="생강차\n3,000원"
+                    android:text="블루레몬 에이드\n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/tea_5"
+                    android:id="@+id/ade_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="얼그레이차\n3,000원"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="50dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tea_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="캐모마일차\n3,000원"
+                    android:text="청포도 에이드\n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/tea_7"
+                    android:id="@+id/ade_5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="페퍼민트차\n3,000원"
+                    android:text="유자 에이드\n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/tea_8"
+                    android:id="@+id/ade_6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="밀크티\n3,000원"
+                    android:text="체리콕\n3,500원"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="50dp" />
 
-                <TextView
-                    android:id="@+id/category_tea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="차 카테고리 입니다."
-                    android:textColor="@color/white"
-                    android:textSize="2dp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

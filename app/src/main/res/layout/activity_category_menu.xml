@@ -81,7 +81,7 @@
                     android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="원하시는 메뉴의 카테고리를 선택해주세요."
+                    android:text="원하시는 메뉴의 카테고리를 선택해주세요. 커피, 라떼, 에이드, 스무디, 차 카테고리가 있습니다."
                     android:textColor="@color/white"
                     android:textSize="2dp" />
 
