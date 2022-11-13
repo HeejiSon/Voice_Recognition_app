@@ -1,6 +1,7 @@
 package com.example.voicerecognition_app;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -29,14 +31,40 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
     Intent intent;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
-    TextView textView;
+    TextView textView, contents;
     final int PERMISSION = 1;
-    private int count = 0;
-    private TextView tvCount;
+    String menu = "";
+    String count;
+    //private MenuSetListener sMenuSetListener;
 
     public order_Fragment() {
 
     }
+
+    /*public interface MenuSetListener{
+        void menuSet(String menu, String count);
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(getActivity() != null && getActivity() instanceof MenuSetListener){
+            sMenuSetListener = (MenuSetListener) getActivity();
+
+        }
+        {
+            if(sMenuSetListener != null){
+                sMenuSetListener.menuSet(String menu, String count);
+            }
+        }
+        /*if (context instanceof MenuSetListener) {
+            menuSet = (MenuSetListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                         + "must implement menuSet");
+        }
+    }*/
+
 
 
 
@@ -65,6 +93,7 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         textView = (TextView) view.findViewById(R.id.sttResult);
         sttBtn = (ImageButton) view.findViewById(R.id.sttStart);
         sttBtn.setOnClickListener(this);
+        contents = (TextView) view.findViewById(R.id.contents);
 
         // RecognizerIntent 생성
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -88,7 +117,7 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void speakOut(){
-        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 왼쪽으로 넘겨 주문을 하세요. 주문이 끝난 후 주문 완료라고 말해주세요";
+        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 왼쪽으로 넘겨 화면을 터치하고 주문을 하세요. 주문이 끝났으면 화면을 터치하고 주문 완료라고 말해주세요";
         tts.setPitch((float)0.6); // 음성 톤 높이 지정
         tts.setSpeechRate((float)1.0); // 음성 속도 지정
         // 첫 번째 매개변수: 음성 출력을 할 텍스트
@@ -128,8 +157,6 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sttStart:
-                //count++;
-                //tvCount.setText(count);
                 //mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                 mRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
                 // 리스너 설정
@@ -224,15 +251,30 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어준다.
             ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            String originText = contents.getText().toString(); // 기존 text
             String resultStr = "";
-           // String orderStr = "";
+            String orderStr = "";
 
 
             for (int i = 0; i < matches.size(); i++) {
-                textView.setText(matches.get(i));
+                //textView.setText(matches.get(i));
                 resultStr += matches.get(i);
-               // orderStr += matches.get(i);
+                orderStr += matches.get(i);
             }
+            //기존의 text에 인식 결과를 이어붙임
+            textView.setText(originText + " " + orderStr + " ");
+
+            // 현재 음성 주문
+            contents.setText(orderStr);
+
+            // 녹음버튼을 누를 때까지 계속 녹음해야됨
+            //mRecognizer.startListening(intent);
+
+
+            if (orderStr.length() < 1) return;
+            orderStr = orderStr.replace(" ", "");
+
+            
 
 
             if (resultStr.length() < 1) return;
@@ -240,7 +282,11 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
             moveActivityPay(resultStr);
 
+            //moveActivityOrder(orderStr);
+
+
         }
+
 
         @Override
         public void onPartialResults(Bundle partialResults) {
@@ -252,14 +298,27 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
         }
 
+        public void moveActivityOrder(String orderStr){
+           /* if (orderStr.contains("아메리카노")) {
+                menu = "아메리카노";
+                String a = removeStringNumber(orderStr);
+                count = a;
+
+            }*/
+        }
+
+        public String removeStringNumber(String orderStr) {
+            return orderStr.replaceAll("[^0-9]", "");
+        }
+
         public void moveActivityPay(String resultStr) {
             if (resultStr.contains("주문완료") || (resultStr.contains("완료"))||(resultStr.contains("주문"))) {
-                Toast.makeText(getActivity().getApplicationContext(), "결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
-                CharSequence text = "결제화면으로 이동합니다.";
+                Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                CharSequence text = "주문확인 및 결제화면으로 이동합니다.";
                 tts.setPitch((float) 0.6); // 음성 톤 높이 지정
                 tts.setSpeechRate((float) 1.0); // 음성 속도 지정
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-                Intent intent1 = new Intent(getActivity(), pay_tab.class);
+                Intent intent1 = new Intent(getActivity(),orderPay.class);
                 startActivity(intent1);
             }
         }

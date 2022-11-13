@@ -21,7 +21,6 @@ public class Fragment_1 extends Fragment implements TextToSpeech.OnInitListener 
 
     public Fragment_1() {
         // Required empty public constructor
-
     }
 
 
@@ -95,8 +94,6 @@ public class Fragment_1 extends Fragment implements TextToSpeech.OnInitListener 
             tts.setSpeechRate((float) 1.0); // 음성 속도 지정
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
         });
-
-        // Inflate the layout for this fragment
         return view;
     }
 

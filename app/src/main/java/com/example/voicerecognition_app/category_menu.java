@@ -80,7 +80,7 @@ public class category_menu extends AppCompatActivity implements TextToSpeech.OnI
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent3 = new Intent(v.getContext(), tab_3.class);
+                    Intent intent3 = new Intent(v.getContext(), menu_tab_3.class);
                     startActivity(intent3);
                 }
             }, 2000);
@@ -98,7 +98,7 @@ public class category_menu extends AppCompatActivity implements TextToSpeech.OnI
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent4 = new Intent(v.getContext(), tab_4.class);
+                    Intent intent4 = new Intent(v.getContext(), menu_tab_4.class);
                     startActivity(intent4);
                 }
             }, 2000);
@@ -115,7 +115,7 @@ public class category_menu extends AppCompatActivity implements TextToSpeech.OnI
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent5 = new Intent(v.getContext(), tab_5.class);
+                    Intent intent5 = new Intent(v.getContext(), menu_tab_5.class);
                     startActivity(intent5);
                 }
             }, 2000);
