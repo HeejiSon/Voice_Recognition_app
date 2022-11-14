@@ -1,11 +1,16 @@
 package com.example.voicerecognition_app;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
@@ -15,74 +20,78 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 
 
 public class order_Fragment extends Fragment implements View.OnClickListener, TextToSpeech.OnInitListener{
     private TextToSpeech tts;
-    Intent intent;
+    Intent intent, intent2;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
-    TextView textView, contents;
+    TextView textView, contents, menu;
     final int PERMISSION = 1;
-    String menu = "";
-    String count;
-    //private MenuSetListener sMenuSetListener;
-
-    public order_Fragment() {
-
-    }
-
-    /*public interface MenuSetListener{
-        void menuSet(String menu, String count);
-    }
-
-    @Override
-    public void onAttach(Context context){
-        super.onAttach(context);
-        if(getActivity() != null && getActivity() instanceof MenuSetListener){
-            sMenuSetListener = (MenuSetListener) getActivity();
-
-        }
-        {
-            if(sMenuSetListener != null){
-                sMenuSetListener.menuSet(String menu, String count);
-            }
-        }
-        /*if (context instanceof MenuSetListener) {
-            menuSet = (MenuSetListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                         + "must implement menuSet");
-        }
-    }*/
+    //myDBHelper myDBHelper;
+    SQLiteDatabase sqlDB;
+    EditText edtNameResultm, edtNumberResult;
+    float val = 0;
+    public static final int REQUEST_CODE = 1000;
 
 
+    private final static String TAG = "DataBaseHelper"; // Logcat에 출력할 태그이름
+    // database 의 파일 경로
+    private static String DB_PATH = "";
+    private static String DB_NAME = "kiosk.db";
+    private SQLiteDatabase mDataBase;
+    private Context mContext;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //getVal();
 
+        /*myDBHelper = new myDBHelper(getContext());
 
-        /*// 현재 프레그멘트 가져오기
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.order_frame);
-        if(fragment instanceof order_Fragment) {
+        sqlDB = myDBHelper.getReadableDatabase();
+        Cursor cursor;
+        cursor = sqlDB.rawQuery("SELECT menu_name, menu_price FROM menu where menu_num = 1;",null);
 
-        }*/
+        String strNames = "메뉴이름"+"\r\n"+"\r\n";
+        String strNumbers = "가격"+"\r\n"+"\r\n";
+
+        while (cursor.moveToNext()){
+            strNames += cursor.getString(0) + "\r\n";
+            strNumbers += cursor.getString(1) + "\r원\n";
+        }
+        edtNameResultm.setText(strNames);
+        edtNumberResult.setText(strNumbers);
+        cursor.close();
+        sqlDB.close();*/
+
 
         View view = inflater.inflate(R.layout.fragment_order, container, false);
 
         tts = new TextToSpeech(getActivity().getApplicationContext(), this);
+
+        menu = (TextView) view.findViewById(R.id.menu);
 
 
         // 안드로이드 6.0버전 이상인지 체크해서 퍼미션 체크
@@ -102,22 +111,148 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         // 인식 언어 한국어로 설정
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
-/*
-        // 버튼 입력시 STT 실행
-        sttBtn.setOnClickListener(v -> {
-            mRecognizer = SpeechRecognizer.createSpeechRecognizer((Activity) getActivity().getApplicationContext());
-            // 리스너 설정
-            mRecognizer.setRecognitionListener(listener);
-            // 듣기 시작
-            mRecognizer.startListening(intent);
-        });*/
+        //json 파일 읽어와서 분석하기
+
+        //assets폴더의 파일을 가져오기 위해
+        //창고관리자(AssetManager) 얻어오기
+        /*AssetManager assetManager= getContext().getAssets();
+
+        //assets/ test.json 파일 읽기 위한 InputStream
+        try {
+            InputStream is= assetManager.open("jsons/test.json");
+            InputStreamReader isr= new InputStreamReader(is);
+            BufferedReader reader= new BufferedReader(isr);
+
+            StringBuffer buffer= new StringBuffer();
+            String line= reader.readLine();
+            while (line!=null){
+                buffer.append(line+"\n");
+                line=reader.readLine();
+            }
+
+            String jsonData= buffer.toString();
+
+            //읽어온 json문자열 확인
+            //menu.setText(jsonData);
+
+            //json 분석
+            //json 객체 생성
+            //JSONObject jsonObject= new JSONObject(jsonData);
+           // String name= jsonObject.getString("name");
+            //Integer price= jsonObject.getInt("price");
+
+            //menu.setText("메뉴이름 : "+name+"\n"+"가격 : "+price);
+
+            //json 데이터가 []로 시작하는 배열일때..
+            JSONArray jsonArray= new JSONArray(jsonData);
+
+
+
+            for(int i=0; i<jsonArray.length();i++){
+                JSONObject jo=jsonArray.getJSONObject(i);
+
+                name= jo.getString("name");
+                price= jo.getInt("price");
+                //JSONObject flag=jo.getJSONObject("flag");
+                //int aa= flag.getInt("aa");
+                //int bb= flag.getInt("bb");
+
+                s += name+" : "+price+"\n";
+            }
+            menu.setText(s);
+
+        } catch (IOException e) {e.printStackTrace();} catch (JSONException e) {e.printStackTrace(); }*/
+
         return view;
     }
 
 
+
+
+
+
+    /*public void getVal() {
+
+        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT menu_name FROM menu where menu_num = 1;",null);
+        if (cursor.moveToNext())
+        {
+            val = cursor.getFloat(3);
+        }
+
+        cursor.close();
+        dbHelper.close();
+    }
+
+    // DB가 있나 체크하기
+    public void isCheckDB(Context context) {
+        DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+        this.mContext = context;
+        dataBaseCheck();
+    }
+
+    private void dataBaseCheck() {
+        File dbFile = new File(DB_PATH + DB_NAME);
+        if (!dbFile.exists()) {
+            dbCopy();
+            Log.d(TAG,"Database is copied.");
+        }
+
+    }
+    // DB를 복사하기
+    // assets의 /db/xxxx.db 파일을 설치된 프로그램의 내부 DB공간으로 복사하기
+    private void dbCopy() {
+
+        try {
+            File folder = new File(DB_PATH);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            InputStream inputStream = mContext.getAssets().open(DB_NAME);
+            String out_filename = DB_PATH + DB_NAME;
+            OutputStream outputStream = new FileOutputStream(out_filename);
+            byte[] mBuffer = new byte[1024];
+            int mLength;
+            while ((mLength = inputStream.read(mBuffer)) > 0) {
+                outputStream.write(mBuffer,0,mLength);
+            }
+            outputStream.flush();;
+            outputStream.close();
+            inputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("dbCopy","IOException 발생함");
+        }
+
+    }
+
+
+
+    public class myDBHelper extends SQLiteOpenHelper {
+        public myDBHelper(Context context) {
+            super(context, "kiosk.db", null, 1);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL("CREATE TABLE menuL ( gName CHAR(20) PRIMARY KEY,gNumber INTEGER);");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS menu");
+            onCreate(db);
+
+        }
+    }*/
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void speakOut(){
-        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 왼쪽으로 넘겨 화면을 터치하고 주문을 하세요. 주문이 끝났으면 화면을 터치하고 주문 완료라고 말해주세요";
+        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 오른쪽으로 넘겨 화면을 터치하고 주문을 하세요. 주문이 끝났으면 화면을 터치하고 주문 완료라고 말해주세요";
         tts.setPitch((float)0.6); // 음성 톤 높이 지정
         tts.setSpeechRate((float)1.0); // 음성 속도 지정
         // 첫 번째 매개변수: 음성 출력을 할 텍스트
@@ -236,19 +371,6 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         @Override
         public void onResults(Bundle results) {
 
-            /*
-            @Override
-            public void onResults(Bundle results) {
-            String key= "";
-            key = SpeechRecognizer.RESULTS_RECOGNITION;
-            ArrayList<String> mResult = results.getStringArrayList(key);
-            String[] rs = new String[mResult.size()];
-            mResult.toArray(rs);
-            Toast.makeText(getContext(), rs[0], Toast.LENGTH_SHORT).show();
-            mRecognizer.startListening(i); //음성인식이 계속 되는 구문이니 필요에 맞게 쓰시길 바람
-        }
-             */
-
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어준다.
             ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             String originText = contents.getText().toString(); // 기존 text
@@ -274,15 +396,13 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
             if (orderStr.length() < 1) return;
             orderStr = orderStr.replace(" ", "");
 
-            
 
 
             if (resultStr.length() < 1) return;
             resultStr = resultStr.replace(" ", "");
 
             moveActivityPay(resultStr);
-
-            //moveActivityOrder(orderStr);
+            moveActivityOrder(orderStr);
 
 
         }
@@ -299,17 +419,74 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         }
 
         public void moveActivityOrder(String orderStr){
-           /* if (orderStr.contains("아메리카노")) {
-                menu = "아메리카노";
-                String a = removeStringNumber(orderStr);
-                count = a;
+            AssetManager assetManager= getContext().getAssets();
 
-            }*/
+            //assets/ test.json 파일 읽기 위한 InputStream
+            try {
+                InputStream is= assetManager.open("jsons/test.json");
+                InputStreamReader isr= new InputStreamReader(is);
+                BufferedReader reader= new BufferedReader(isr);
+
+                StringBuffer buffer= new StringBuffer();
+                String line= reader.readLine();
+                while (line!=null){
+                    buffer.append(line+"\n");
+                    line=reader.readLine();
+                }
+
+                String jsonData= buffer.toString();
+
+                //읽어온 json문자열 확인
+                //menu.setText(jsonData);
+
+                //json 분석
+                //json 객체 생성
+                //JSONObject jsonObject= new JSONObject(jsonData);
+                // String name= jsonObject.getString("name");
+                //Integer price= jsonObject.getInt("price");
+
+                //menu.setText("메뉴이름 : "+name+"\n"+"가격 : "+price);
+
+                //json 데이터가 []로 시작하는 배열일때..
+                JSONArray jsonArray= new JSONArray(jsonData);
+
+                String s="";
+
+                for(int i=0; i<jsonArray.length();i++){
+                    JSONObject jo=jsonArray.getJSONObject(i);
+
+                    String name= jo.getString("name");
+                    Integer price= jo.getInt("price");
+
+                    //JSONObject nameObject = new JSONObject(name);
+
+                    //Iterator j = nameObject.keys();
+
+                    //s += name+" : "+price+"\n";
+                    s += name+ "\n";
+                }
+                menu.setText(s);
+
+                if (s.contains(orderStr)) {
+                    Toast.makeText(getActivity().getApplicationContext(), "메뉴 있음", Toast.LENGTH_SHORT).show();
+                    //String menu = "";
+                    //menu = orderStr;
+                    //intent2 = new Intent(getActivity(),orderPay.class);
+                    //intent2.putExtra("name", orderStr);
+                }
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), "없는 메뉴", Toast.LENGTH_SHORT).show();
+                }
+
+
+            } catch (IOException e) {e.printStackTrace();} catch (JSONException e) {e.printStackTrace(); }
+
+
         }
 
-        public String removeStringNumber(String orderStr) {
+        /*public String removeStringNumber(String orderStr) {
             return orderStr.replaceAll("[^0-9]", "");
-        }
+        }*/
 
         public void moveActivityPay(String resultStr) {
             if (resultStr.contains("주문완료") || (resultStr.contains("완료"))||(resultStr.contains("주문"))) {

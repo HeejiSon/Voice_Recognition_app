@@ -14,7 +14,10 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,9 +25,10 @@ import java.util.Locale;
 public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
     private TextToSpeech tts;
-    Intent intent;
+    Intent intent, intent1;
     SpeechRecognizer mRecognizer;
     final int PERMISSION = 1;
+    TextView pay_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         setTitle("주문확인 및 결제");
 
         tts = new TextToSpeech(this, this);
+        pay_1 = (TextView) findViewById(R.id.pay_1);
 
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
@@ -43,6 +48,17 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
         // 인식 언어 한국어로 설정
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+
+
+        /*try{
+            intent1 = getIntent();
+
+            String name = intent1.getExtras().getString("name");
+            pay_1.setText(name);
+
+        } catch (Exception e){
+
+        }*/
 
         /*new Handler().postDelayed(new Runnable() {
             @Override
@@ -111,8 +127,8 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
                 tts.setPitch((float)0.6); // 음성 톤 높이 지정
                 tts.setSpeechRate((float)1.0); // 음성 속도 지정
                 tts.speak(order+ " " + pay, TextToSpeech.QUEUE_ADD, null);
-               // speakOut();
-               // PayOut();
+                // speakOut();
+                // PayOut();
             }
         }else{
             Log.e("TTS", "Initialization Failed!");
@@ -232,6 +248,12 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
                 //Intent intent1 = new Intent(getActivity(),orderPay.class);
                 //startActivity(intent1);
+            }
+            else{
+                CharSequence text = "다시 한 번 말씀해주세요.";
+                tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
             }
         }
 
