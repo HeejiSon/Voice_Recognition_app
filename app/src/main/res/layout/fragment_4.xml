@@ -69,17 +69,6 @@
                     android:textSize="50dp" />
 
                 <TextView
-                    android:id="@+id/smoothie_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:text="레몬 스무디\n4,000원"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="50dp" />
-
-                <TextView
                     android:id="@+id/smoothie_5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
