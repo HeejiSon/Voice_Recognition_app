@@ -45,46 +45,42 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
     Intent intent, intent2;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
-    TextView textView, contents, menu;
+    TextView textView, contents, contents2, menu;
     final int PERMISSION = 1;
-    //myDBHelper myDBHelper;
-    SQLiteDatabase sqlDB;
-    EditText edtNameResultm, edtNumberResult;
-    float val = 0;
-    public static final int REQUEST_CODE = 1000;
+    orderPay orderPay;
+    Fragment fragment1;
+    /*
+    private static final String plz = "";
 
+    private String mParam1;
 
-    private final static String TAG = "DataBaseHelper"; // Logcat에 출력할 태그이름
-    // database 의 파일 경로
-    private static String DB_PATH = "";
-    private static String DB_NAME = "kiosk.db";
-    private SQLiteDatabase mDataBase;
-    private Context mContext;
+    public void onAttach(@Nullable Context context){
+        super.onAttach(context);
+        this.context = context;
+
+    }
+
+    public static order_Fragment newInstance(String param1) {
+        order_Fragment fragment = new order_Fragment();
+        Bundle args = new Bundle();
+        args.putString(plz, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(plz);
+            getArguments().getString();
+        }
+    }*/
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //getVal();
-
-        /*myDBHelper = new myDBHelper(getContext());
-
-        sqlDB = myDBHelper.getReadableDatabase();
-        Cursor cursor;
-        cursor = sqlDB.rawQuery("SELECT menu_name, menu_price FROM menu where menu_num = 1;",null);
-
-        String strNames = "메뉴이름"+"\r\n"+"\r\n";
-        String strNumbers = "가격"+"\r\n"+"\r\n";
-
-        while (cursor.moveToNext()){
-            strNames += cursor.getString(0) + "\r\n";
-            strNumbers += cursor.getString(1) + "\r원\n";
-        }
-        edtNameResultm.setText(strNames);
-        edtNumberResult.setText(strNumbers);
-        cursor.close();
-        sqlDB.close();*/
 
 
         View view = inflater.inflate(R.layout.fragment_order, container, false);
@@ -103,6 +99,7 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         sttBtn = (ImageButton) view.findViewById(R.id.sttStart);
         sttBtn.setOnClickListener(this);
         contents = (TextView) view.findViewById(R.id.contents);
+        contents2 = (TextView) view.findViewById(R.id.contents2);
 
         // RecognizerIntent 생성
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -166,89 +163,6 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
         return view;
     }
 
-
-
-
-
-
-    /*public void getVal() {
-
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT menu_name FROM menu where menu_num = 1;",null);
-        if (cursor.moveToNext())
-        {
-            val = cursor.getFloat(3);
-        }
-
-        cursor.close();
-        dbHelper.close();
-    }
-
-    // DB가 있나 체크하기
-    public void isCheckDB(Context context) {
-        DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-        this.mContext = context;
-        dataBaseCheck();
-    }
-
-    private void dataBaseCheck() {
-        File dbFile = new File(DB_PATH + DB_NAME);
-        if (!dbFile.exists()) {
-            dbCopy();
-            Log.d(TAG,"Database is copied.");
-        }
-
-    }
-    // DB를 복사하기
-    // assets의 /db/xxxx.db 파일을 설치된 프로그램의 내부 DB공간으로 복사하기
-    private void dbCopy() {
-
-        try {
-            File folder = new File(DB_PATH);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            InputStream inputStream = mContext.getAssets().open(DB_NAME);
-            String out_filename = DB_PATH + DB_NAME;
-            OutputStream outputStream = new FileOutputStream(out_filename);
-            byte[] mBuffer = new byte[1024];
-            int mLength;
-            while ((mLength = inputStream.read(mBuffer)) > 0) {
-                outputStream.write(mBuffer,0,mLength);
-            }
-            outputStream.flush();;
-            outputStream.close();
-            inputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d("dbCopy","IOException 발생함");
-        }
-
-    }
-
-
-
-    public class myDBHelper extends SQLiteOpenHelper {
-        public myDBHelper(Context context) {
-            super(context, "kiosk.db", null, 1);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE menuL ( gName CHAR(20) PRIMARY KEY,gNumber INTEGER);");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS menu");
-            onCreate(db);
-
-        }
-    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void speakOut(){
@@ -402,7 +316,7 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
             resultStr = resultStr.replace(" ", "");
 
             moveActivityPay(resultStr);
-            moveActivityOrder(orderStr);
+            moveActivityOrder(resultStr, orderStr);
 
 
         }
@@ -451,12 +365,14 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
                 JSONArray jsonArray= new JSONArray(jsonData);
 
                 String s="";
+                String name = "";
+                Integer price = 0;
 
                 for(int i=0; i<jsonArray.length();i++){
                     JSONObject jo=jsonArray.getJSONObject(i);
 
-                    String name= jo.getString("name");
-                    Integer price= jo.getInt("price");
+                    name = jo.getString("name");
+                    price= jo.getInt("price");
 
                     //JSONObject nameObject = new JSONObject(name);
 
@@ -473,9 +389,28 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
                     //menu = orderStr;
                     //intent2 = new Intent(getActivity(),orderPay.class);
                     //intent2.putExtra("name", orderStr);
+                    //Bundle bundle = new Bundle();
+                    //bundle.putString("name", contents.getText().toString());
+                    //Fragment fragment1 = new Fragment();
+                    //fragment1.setArguments(bundle);
+                    Intent intent1 = new Intent(getContext(),orderPay.class);
+
+                    //intent1.putExtra("name", contents.getText().toString());
+
+                    intent1.putExtra("name", orderStr);
+                    //intent1.putExtra("name2", orderStr);
+
+
+                    //onActivityResult(intent1, 102, bundle);
+
+
+                    //getParentFragment().setArguments(bundle);
+
+                    //intent1.putExtra("name", orderStr);
+                    startActivityForResult(intent1, 102);
                 }
                 else {
-                    Toast.makeText(getActivity().getApplicationContext(), "없는 메뉴", Toast.LENGTH_SHORT).show();
+
                 }
 
 

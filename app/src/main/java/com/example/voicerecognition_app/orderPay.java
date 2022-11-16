@@ -2,6 +2,7 @@ package com.example.voicerecognition_app;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.Intent;
@@ -28,7 +29,10 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
     Intent intent, intent1;
     SpeechRecognizer mRecognizer;
     final int PERMISSION = 1;
-    TextView pay_1;
+    TextView pay_1, pay_2;
+    order_Fragment order_fragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,21 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
 
         tts = new TextToSpeech(this, this);
         pay_1 = (TextView) findViewById(R.id.pay_1);
+        pay_2 = (TextView) findViewById(R.id.pay_2);
+        order_fragment = new order_Fragment();
+
+        intent1 = getIntent();
+        Bundle bundle = intent1.getExtras();
+        //Bundle bundle = new Bundle(1);
+        //String menu = bundle.getString("name");
+        String menu = intent1.getStringExtra("name");
+        //String menu2 = intent1.getStringExtra("name2");
+        //Log.i("menu", menu);
+
+        //order_fragment.getArguments();
+        pay_1.setText(menu);
+        //pay_2.setText(menu2);
+        Toast.makeText(this, menu,Toast.LENGTH_SHORT).show();
 
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
@@ -48,6 +67,9 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
         // 인식 언어 한국어로 설정
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+
+
+
 
 
         /*try{
@@ -88,14 +110,6 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         return true;
     }
 
-
-
-    /*private void OrderOut(){
-        CharSequence text1 = "주문확인  ";
-        tts.setPitch((float)0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float)1.0); // 음성 속도 지정
-        tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
-    }*/
 
     private void speakOut(){
         CharSequence text = "아메리카노 2잔, 바닐라라떼 1잔 총 3잔으로 8500원입니다.";
@@ -250,7 +264,7 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
                 //startActivity(intent1);
             }
             else{
-                CharSequence text = "다시 한 번 말씀해주세요.";
+                CharSequence text = "다시 한번 말씀해주세요.";
                 tts.setPitch((float) 0.6); // 음성 톤 높이 지정
                 tts.setSpeechRate((float) 1.0); // 음성 속도 지정
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
