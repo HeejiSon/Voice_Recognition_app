@@ -29,9 +29,7 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
     Intent intent, intent1;
     SpeechRecognizer mRecognizer;
     final int PERMISSION = 1;
-    TextView pay_1, pay_2;
-    order_Fragment order_fragment;
-
+    TextView pay_1, pay_2, pay_3, pay_4, total_q, total_price;
 
 
     @Override
@@ -43,20 +41,12 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         tts = new TextToSpeech(this, this);
         pay_1 = (TextView) findViewById(R.id.pay_1);
         pay_2 = (TextView) findViewById(R.id.pay_2);
-        order_fragment = new order_Fragment();
+        pay_3 = (TextView) findViewById(R.id.pay_3);
+        pay_4 = (TextView) findViewById(R.id.pay_4);
+        total_q = (TextView) findViewById(R.id.total_q) ;
+        total_price = (TextView) findViewById(R.id.total_price);
 
-        intent1 = getIntent();
-        Bundle bundle = intent1.getExtras();
-        //Bundle bundle = new Bundle(1);
-        //String menu = bundle.getString("name");
-        String menu = intent1.getStringExtra("name");
-        //String menu2 = intent1.getStringExtra("name2");
-        //Log.i("menu", menu);
-
-        //order_fragment.getArguments();
-        pay_1.setText(menu);
-        //pay_2.setText(menu2);
-        Toast.makeText(this, menu,Toast.LENGTH_SHORT).show();
+        movedata();
 
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
@@ -67,32 +57,6 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
         // 인식 언어 한국어로 설정
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
-
-
-
-
-
-        /*try{
-            intent1 = getIntent();
-
-            String name = intent1.getExtras().getString("name");
-            pay_1.setText(name);
-
-        } catch (Exception e){
-
-        }*/
-
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRecognizer=SpeechRecognizer.createSpeechRecognizer(orderPay.this);
-                mRecognizer.setRecognitionListener(listener);
-                mRecognizer.startListening(intent);
-            }
-        }, 100000);*/
-
-
-
 
     }
 
@@ -110,21 +74,58 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
         return true;
     }
 
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    private void speakOut(){
-        CharSequence text = "아메리카노 2잔, 바닐라라떼 1잔 총 3잔으로 8500원입니다.";
-        tts.setPitch((float)0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float)1.0); // 음성 속도 지정
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+        if (requestCode == 1000) {
+            if (resultCode == RESULT_OK) {
+                String resultMsg = data.getStringExtra("ResultMsg");
+                Toast.makeText(this, "RESULT_OK : " + resultMsg, Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                String resultMsg = data.getStringExtra("ResultMsg");
+                Toast.makeText(this, "RESULT_CANCELED : " + resultMsg, Toast.LENGTH_SHORT).show();
+            } else {
+
+            }
+        }
+    }*/
+
+    private void movedata(){
+        intent1 = getIntent();
+        Bundle bundle = intent1.getExtras();
+        String menu1 = bundle.getString("menu1");
+        Integer count1 = bundle.getInt("count1");
+        String menu2 = bundle.getString("menu2");
+        Integer count2 = bundle.getInt("count2");
+
+        /*String menu1 = intent1.getStringExtra("name");
+
+        String count1 = intent1.getStringExtra("price");
+
+        pay_1.setText(menu1);
+        pay_2.setText(count1 + " 잔");
+
+        String menu2 = intent1.getStringExtra("name2");
+        String count2 = intent1.getStringExtra("price");*/
+
+        pay_1.setText(menu1);
+        pay_2.setText(count1 + " 잔");
+        pay_3.setText(menu2);
+        pay_4.setText(count2 + " 잔");
+
+        Integer total_qu = count1 + count2;
+
+        total_q.setText("총 수량 : " + total_qu + " 잔");
+
+
+
+
     }
 
-    private void PayOut(){
-        CharSequence text = "결제하시려면 화면을 터치하고 결제라고 말해주세요";
-        tts.setPitch((float)0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float)1.0); // 음성 속도 지정
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-    }
+    String view = "주문확인 및 결제화면 입니다.";
     String order = "아메리카노 2잔, 바닐라라떼 1잔 총 3잔으로 8500원입니다.";
+    //String order = pay_1.getText() + " " +  pay_2.getText() + "잔 으로 원입니다.";
     String pay = "결제하시려면 화면을 터치하고 결제라고 말해주세요";
 
 
@@ -140,7 +141,7 @@ public class orderPay extends AppCompatActivity implements TextToSpeech.OnInitLi
             }else{
                 tts.setPitch((float)0.6); // 음성 톤 높이 지정
                 tts.setSpeechRate((float)1.0); // 음성 속도 지정
-                tts.speak(order+ " " + pay, TextToSpeech.QUEUE_ADD, null);
+                tts.speak(view + " " + order+ " " + pay, TextToSpeech.QUEUE_ADD, null);
                 // speakOut();
                 // PayOut();
             }

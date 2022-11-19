@@ -40,7 +40,8 @@ import java.util.Iterator;
 import java.util.Locale;
 
 
-public class order_Fragment extends Fragment implements View.OnClickListener, TextToSpeech.OnInitListener{
+public class order_Fragment extends Fragment implements View.OnClickListener, TextToSpeech.OnInitListener {
+
     private TextToSpeech tts;
     Intent intent, intent2;
     SpeechRecognizer mRecognizer;
@@ -165,10 +166,10 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void speakOut(){
-        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 오른쪽으로 넘겨 화면을 터치하고 주문을 하세요. 주문이 끝났으면 화면을 터치하고 주문 완료라고 말해주세요";
-        tts.setPitch((float)0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float)1.0); // 음성 속도 지정
+    private void speakOut() {
+        CharSequence text = "화면에 있는 메뉴들을 터치해서 메뉴를 듣고, 화면을 오른쪽으로 넘겨 화면을 터치하고 주문을 하세요.";
+        tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+        tts.setSpeechRate((float) 1.0); // 음성 속도 지정
         // 첫 번째 매개변수: 음성 출력을 할 텍스트
         // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
         //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
@@ -177,7 +178,7 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
     @Override
     public void onDestroy() {
-        if(tts!=null){ // 사용한 TTS객체 제거
+        if (tts != null) { // 사용한 TTS객체 제거
             tts.stop();
             tts.shutdown();
         }
@@ -199,7 +200,6 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
             Log.e("TTS", "Initialization Failed!");
         }
     }
-
 
 
     @Override
@@ -298,7 +298,10 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
                 orderStr += matches.get(i);
             }
             //기존의 text에 인식 결과를 이어붙임
-            textView.setText(originText + " " + orderStr + " ");
+            //textView.setText(originText + " " + orderStr + " ");.
+            textView.setText(originText);
+
+            String finalText = (originText + " " + orderStr + " ");
 
             // 현재 음성 주문
             contents.setText(orderStr);
@@ -306,19 +309,16 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
             // 녹음버튼을 누를 때까지 계속 녹음해야됨
             //mRecognizer.startListening(intent);
 
-
-            if (orderStr.length() < 1) return;
-            orderStr = orderStr.replace(" ", "");
-
+            /*if (orderStr.length() < 1) return;
+            orderStr = orderStr.replace(" ", "");*/
 
 
             if (resultStr.length() < 1) return;
             resultStr = resultStr.replace(" ", "");
 
-            moveActivityPay(resultStr);
+            //moveActivityPay(resultStr);
             moveActivityOrder(orderStr);
-
-
+            //startActivityForResult(intent1, 1000);
         }
 
 
@@ -332,23 +332,25 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
 
         }
 
-        public void moveActivityOrder(String orderStr){
-            AssetManager assetManager= getContext().getAssets();
+        public void moveActivityOrder(String orderStr) {
+            Intent intent1 = new Intent(getContext(), orderPay.class);
+            Bundle bundle = new Bundle();
+            /*AssetManager assetManager = getContext().getAssets();
 
             //assets/ test.json 파일 읽기 위한 InputStream
             try {
-                InputStream is= assetManager.open("jsons/test.json");
-                InputStreamReader isr= new InputStreamReader(is);
-                BufferedReader reader= new BufferedReader(isr);
+                InputStream is = assetManager.open("jsons/test.json");
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
 
-                StringBuffer buffer= new StringBuffer();
-                String line= reader.readLine();
-                while (line!=null){
-                    buffer.append(line+"\n");
-                    line=reader.readLine();
+                StringBuffer buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
                 }
 
-                String jsonData= buffer.toString();
+                String jsonData = buffer.toString();
 
                 //읽어온 json문자열 확인
                 //menu.setText(jsonData);
@@ -362,93 +364,289 @@ public class order_Fragment extends Fragment implements View.OnClickListener, Te
                 //menu.setText("메뉴이름 : "+name+"\n"+"가격 : "+price);
 
                 //json 데이터가 []로 시작하는 배열일때..
-                JSONArray jsonArray= new JSONArray(jsonData);
+                JSONArray jsonArray = new JSONArray(jsonData);
 
-                String s="";
+                String s = "";
                 String name = "";
                 Integer price = 0;
 
-                for(int i=0; i<jsonArray.length();i++){
-                    JSONObject jo=jsonArray.getJSONObject(i);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jo = jsonArray.getJSONObject(i);
 
                     name = jo.getString("name");
-                    price= jo.getInt("price");
+                    price = jo.getInt("price");
 
                     //JSONObject nameObject = new JSONObject(name);
 
                     //Iterator j = nameObject.keys();
 
                     //s += name+" : "+price+"\n";
-                    s += name+ "\n";
+                    s += name + "\n";
                 }
-                menu.setText(s);
+                menu.setText(s);*/
 
-                if (s.contains(orderStr)) {
-                    Toast.makeText(getActivity().getApplicationContext(), "메뉴 있음", Toast.LENGTH_SHORT).show();
-                    //String menu = "";
-                    //menu = orderStr;
-                    //intent2 = new Intent(getActivity(),orderPay.class);
-                    //intent2.putExtra("name", orderStr);
-                    //Bundle bundle = new Bundle();
-                    //bundle.putString("name", contents.getText().toString());
-                    //Fragment fragment1 = new Fragment();
-                    //fragment1.setArguments(bundle);
-                    Intent intent1 = new Intent(getContext(),orderPay.class);
+                /**String submenu2 = orderStr;
 
-                    //intent1.putExtra("name", contents.getText().toString());
-
-                    intent1.putExtra("name", orderStr);
-                    //intent1.putExtra("name2", orderStr);
-
-
-                    //onActivityResult(intent1, 102, bundle);
-
-
-                    //getParentFragment().setArguments(bundle);
-
-                    //intent1.putExtra("name", orderStr);
-                    startActivityForResult(intent1, 102);
-                }
-                else {
-
+                submenu1 = submenu1.substring(0, submenu1.indexOf(" "));
+                submenu2 = submenu2.substring(0, submenu2.indexOf(" "));
+                if (finalText.contains("한잔") || finalText.contains("한")) {
+                    bundle.putInt("count", 1);
+                } else if (finalText.contains("두잔") || finalText.contains("두")) {
+                    bundle.putInt("count", 2);
                 }
 
+                bundle.putString("name", submenu1);
+                bundle.putString("name2", submenu2);
+                if (orderStr.contains("한잔") || orderStr.contains("한")) {
+                    bundle.putInt("count2", 1);
+                } else if (orderStr.contains("두잔") || orderStr.contains("두")) {
+                    bundle.putInt("count2", 2);
+                }*/
 
-            } catch (IOException e) {e.printStackTrace();} catch (JSONException e) {e.printStackTrace(); }
+                /* String submenu1 = finalText;
+                //String submenu1 = orderStr;
+                submenu1 = submenu1.substring(0, submenu1.indexOf(" "));
+                bundle.putString("name", submenu1);
+                Toast.makeText(getActivity().getApplicationContext(), submenu1, Toast.LENGTH_SHORT).show();
+                if (finalText.contains("한잔") || finalText.contains("한")) {
+                    bundle.putInt("count", 1);
+                } else if (finalText.contains("두잔") || finalText.contains("두")) {
+                    bundle.putInt("count", 2);
+                } else {
+
+                }*/
 
 
-        }
+               /* CharSequence text = "추가 주문을 하고싶으시면 터치하고 메뉴를 주문하고, 결제하려면 주문완료라고 말하세요.";
+                tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");*/
+                /*if (orderStr.contains("주문완료") || (orderStr.contains("완료")) || (orderStr.contains("주문"))) {
+                    Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    CharSequence text1 = "주문확인 및 결제화면으로 이동합니다.";
+                    tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                    tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                    tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                    intent2 = new Intent(getActivity(), orderPay.class);
+                    startActivity(intent2);
 
-        /*public String removeStringNumber(String orderStr) {
-            return orderStr.replaceAll("[^0-9]", "");
-        }*/
+                }else{
+                    String submenu2 = orderStr;
+                    submenu2 = submenu2.substring(0, submenu2.indexOf(" "));
+                    if (orderStr.contains("한잔") || orderStr.contains("한")) {
+                        bundle.putInt("count1", 1);
+                    } else if (orderStr.contains("두잔") || orderStr.contains("두")|| orderStr.contains("2")) {
+                        bundle.putInt("count1", 2);
+                    }
+                    bundle.putString("name", submenu2);
 
-        public void moveActivityPay(String resultStr) {
-            if (resultStr.contains("주문완료") || (resultStr.contains("완료"))||(resultStr.contains("주문"))) {
+                    intent1.putExtras(bundle);
+                }*/
+            //String submenu2 = orderStr;
+            /*submenu2 = submenu2.substring(0, submenu2.indexOf("잔"));
+            if (orderStr.contains("한잔") || orderStr.contains("한")) {
+                bundle.putInt("count1", 1);
+            } else if (orderStr.contains("두잔") || orderStr.contains("두")|| orderStr.contains("2")) {
+                bundle.putInt("count1", 2);
+            }*
+            if (submenu2.contains("한잔") || submenu2.contains("한")|| submenu2.contains("1")) {
+                bundle.putInt("count1", 1);
+            } else if (submenu2.contains("두잔") || submenu2.contains("두")|| submenu2.contains("2")) {
+                bundle.putInt("count1", 2);
+            }
+            bundle.putString("name", submenu2);*/
+            //Toast.makeText(getActivity().getApplicationContext(), orderStr, Toast.LENGTH_SHORT).show();
+
+            String test = orderStr;
+            String[] menu = {
+                    "에스프레소","아메리카노", "카페 라떼", "카페라떼", "바닐라 라떼", "카푸치노", "카페모카", "비엔나커피",
+                    "고구마라떼", "고구마 라떼", "녹차라떼", "녹차 라떼", "오곡라떼",  "오곡 라떼", "티라미수라떼", "티라미수 라떼" ,
+                    "자몽에이드", "자몽 에이드", "레몬에이드", "레몬 에이드", "블루레몬에이드", "블루레몬 에이드", "청포도에이드" , "청포도 에이드", "유자에이드", "유자 에이드", "체리콕",
+                    "딸기 스무디", "딸기스무디", "블루베리스무디", "블루베리 스무디", "망고 스무디" , "망고스무디", "복숭아 스무디", "복숭아스무디",
+                    "레몬차", "유자차", "자몽차", "생강차", "얼그레이차", "캐모마일차", "페퍼민트차", "밀크티",
+                    "레몬 차", "유자 차", "자몽 차", "생강 차", "얼그레이 차", "캐모마일 차", "페퍼민트 차", "밀크티"
+                    };
+            String[] menuName = new String[2];
+            int[] menuCount = new int[2];
+
+            String splitOrder[] = test.split("그리고");
+
+            for(int i=0; i<splitOrder.length; i++){
+                String orderTest1 = splitOrder[i];
+                System.out.println(splitOrder[i]);
+                for(int j=0; j<menu.length; j++){
+                    if(orderTest1.contains(menu[j])){
+                        menuName[i] = menu[j];
+                        if(orderTest1.contains("한 잔")|| orderTest1.contains("한")|| orderTest1.contains("1")){
+                            menuCount[i] = 1;
+                        } else if(orderTest1.contains("두 잔")|| orderTest1.contains("두")|| orderTest1.contains("2")){
+                            menuCount[i] = 2;
+                        } else if(orderTest1.contains("세 잔")|| orderTest1.contains("세")|| orderTest1.contains("3")){
+                            menuCount[i] = 3;
+                        } else if(orderTest1.contains("네 잔")|| orderTest1.contains("네")|| orderTest1.contains("4")){
+                            menuCount[i] = 4;
+                        } else if(orderTest1.contains("다섯 잔")|| orderTest1.contains("다섯")|| orderTest1.contains("5")){
+                            menuCount[i] = 5;
+                        } else {
+                            Toast.makeText(getActivity().getApplicationContext(), "최대 수량 초과", Toast.LENGTH_SHORT).show();
+                            CharSequence text1 = "한 메뉴에 다섯 잔까지 주문이 가능합니다.";
+                            tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                            tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                            tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                        }
+                    }
+                    else{
+                        CharSequence text1 = "존재하지 않는 메뉴입니다.";
+                        tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                        tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                        tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                    }
+                }
+            }
+            Toast.makeText(getActivity().getApplicationContext(), splitOrder[0] + splitOrder[1], Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity().getApplicationContext(), menuName[0] + menuCount[0], Toast.LENGTH_SHORT).show();
+            bundle.putString("menu1", menuName[0]);
+            bundle.putInt("count1", menuCount[0]);
+
+            bundle.putString("menu2", menuName[1]);
+            bundle.putInt("count2", menuCount[1]);
+
+            intent1.putExtras(bundle);
+
+            startActivityForResult(intent1, 1000);
+
+            /*if (orderStr.contains("주문완료") || (orderStr.contains("완료")) || (orderStr.contains("주문"))) {
+                Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                CharSequence text1 = "주문확인 및 결제화면으로 이동합니다.";
+                tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
+
+                if(test.contains("주문완료")){
+
+                }*/
+
+//                intent2 = new Intent(getActivity(), orderPay.class);
+//                startActivity(intent2);
+
+            }
+
+
+
+
+
+
+                /*tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                if (orderStr.contains("주문완료") || (orderStr.contains("완료")) || (orderStr.contains("주문"))) {
+                    Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    CharSequence text1 = "주문확인 및 결제화면으로 이동합니다.";
+                    tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                    tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                    tts.speak(text1, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                } else{
+
+                }*/
+
+
+                 /*else{
+                    CharSequence text = "존재하지않는 메뉴입니다.";
+                    tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                    tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+                }*/
+
+
+
+
+
+
+
+
+
+/***
+ if (s.contains(orderStr)) {
+ intent1.putExtra("name", orderStr);
+ }
+
+ intent1.putExtra("name2", orderStr);
+
+ //startActivityForResult(intent1, 102);
+ /*else if (orderStr.contains("주문완료") || (orderStr.contains("완료"))||(orderStr.contains("주문"))) {
+ Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+ CharSequence text = "주문확인 및 결제화면으로 이동합니다.";
+ tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+ tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+ tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+ Intent intent1 = new Intent(getActivity(),orderPay.class);
+ startActivity(intent1);
+ }*/
+
+                // if (s.contains(orderStr)) {
+
+
+            /*} catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+            //startActivity(intent1);
+
+            /*// 첫번째 메뉴
+            String submenu1 = orderStr;
+            submenu1 = submenu1.substring(0, submenu1.indexOf(" "));
+            //intent1.putExtra("name", submenu1);
+            bundle.putString("name", submenu1);
+            if (orderStr.contains("한잔") || orderStr.contains("한")) {
+                bundle.putString("price", "1");
+
+            } else if (orderStr.contains("두잔") || orderStr.contains("두")) {
+                bundle.putString("price", "2");
+            }
+
+            intent1.putExtras(bundle);
+
+                if (resultStr.contains("주문완료") || (resultStr.contains("완료")) || (resultStr.contains("주문"))) {
+                    Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    CharSequence text = "주문확인 및 결제화면으로 이동합니다.";
+                    tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+                    tts.setSpeechRate((float) 1.0); // 음성 속도 지정
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+
+                }
+                */
+
+
+
+
+
+
+
+
+        /***public void moveActivityPay(String resultStr) {
+            if (resultStr.contains("주문완료") || (resultStr.contains("완료")) || (resultStr.contains("주문"))) {
                 Toast.makeText(getActivity().getApplicationContext(), "주문확인 및 결제화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
                 CharSequence text = "주문확인 및 결제화면으로 이동합니다.";
                 tts.setPitch((float) 0.6); // 음성 톤 높이 지정
                 tts.setSpeechRate((float) 1.0); // 음성 속도 지정
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
-                Intent intent1 = new Intent(getActivity(),orderPay.class);
-                startActivity(intent1);
+
             }
         }
 
-        /*
-         * 음성인식/출력 객체가 남아있다면 실행을 중지하고 메모리에서 제거
-         */
-        //@Override
-        public void onDestroy() {
-            if (mRecognizer != null) {
-                mRecognizer.destroy();
-                mRecognizer.cancel();
-                mRecognizer = null;
+            /*
+             * 음성인식/출력 객체가 남아있다면 실행을 중지하고 메모리에서 제거
+             */
+            //@Override
+            public void onDestroy () {
+                if (mRecognizer != null) {
+                    mRecognizer.destroy();
+                    mRecognizer.cancel();
+                    mRecognizer = null;
+                }
             }
-        }
     };
-
-
 }
 
 
